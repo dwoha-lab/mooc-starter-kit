@@ -106,6 +106,7 @@ mooc-starter-kit/
 ## Related repositories
 
 - **[Journalism skills library](https://github.com/jamditis/claude-skills-journalism)** — 36 pre-built Claude Code skills for journalism (source verification, FOIA requests, data journalism, editorial workflows). Browse for ideas or install individual skills.
+- **[NICAR 2026: Skills in Codex and Claude](https://github.com/amkessler/nicar2026_skills_in_codex_claude)** — Aaron Kessler's NICAR session repo with examples of building and using skills across Claude Code and OpenAI Codex CLI for data journalism workflows.
 - **[AI tools for newsrooms](https://github.com/jamditis/tools)** — A curated collection of AI tools and resources for journalists and newsrooms.
 
 ## License
