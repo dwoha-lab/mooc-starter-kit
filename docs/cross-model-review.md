@@ -34,22 +34,30 @@ Two things make this powerful:
 ## Installing Copilot CLI
 
 ```
-npm install -g github copilot
+npm install -g @github/copilot
 ```
 
-Auth piggybacks on the GitHub login Claude Code already has. If you're signed into `gh`, you're signed into Copilot CLI. No extra step.
+Auth uses the GitHub account Copilot is licensed against. Run `copilot` once and it'll walk you through signing in. If you already have `gh` logged in, Copilot CLI will pick that up.
+
+Package names shift — if the above doesn't produce a working `copilot` binary, check [GitHub's Copilot CLI docs](https://docs.github.com/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli) for the current install command.
 
 Quick test:
 
 ```
-copilot -p "what does this repo do" --add-dir .
+copilot -p "what does this repo do"
 ```
 
 If it returns a sensible summary, you're good.
 
 ## Installing Codex CLI
 
-OpenAI's Codex CLI ships through the `openai` package or a similar installer — check the current install instructions on OpenAI's docs since the package name has changed once or twice. Auth uses your OpenAI account.
+OpenAI's Codex CLI ships through `@openai/codex`:
+
+```
+npm install -g @openai/codex
+```
+
+Auth uses your OpenAI account — set `OPENAI_API_KEY` in your env, or run `codex` once to walk through the login. Package name has shifted a couple of times, so check [OpenAI's Codex CLI docs](https://github.com/openai/codex) if the command above doesn't land.
 
 Quick test:
 

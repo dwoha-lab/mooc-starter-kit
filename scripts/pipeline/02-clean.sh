@@ -5,7 +5,7 @@
 #   ./02-clean.sh
 #
 # REQUIREMENTS:
-#   - bash, sed, tr
+#   - bash, perl (for multi-line HTML stripping)
 #   - 01-fetch.sh has already run and populated ./work/01-raw/
 #
 # WHAT IT DOES:
@@ -41,20 +41,22 @@ for FILE in "$IN_DIR"/*.md "$IN_DIR"/*.txt "$IN_DIR"/*.html; do
     BASE="$(basename "$FILE")"
     OUT="$OUT_DIR/${BASE%.*}.txt"
 
-    # Strip script and style blocks, then tags, then collapse whitespace.
-    sed -E \
-        -e ':a;N;$!ba' \
-        -e 's#<script[^>]*>.*</script>##gI' \
-        -e 's#<style[^>]*>.*</style>##gI' \
-        -e 's#<[^>]+>##g' \
-        -e 's/&nbsp;/ /g' \
-        -e 's/&amp;/\&/g' \
-        -e 's/&lt;/</g' \
-        -e 's/&gt;/>/g' \
-        "$FILE" \
-        | tr -s '[:space:]' ' ' \
-        | sed -e 's/^ //' -e 's/ $//' \
-        > "$OUT"
+    # Strip script/style blocks (multi-line safe via perl -0 slurp), then
+    # tags, then decode common entities, then collapse whitespace.
+    perl -0777 -pe '
+        s{<script\b[^>]*>.*?</script>}{}gis;
+        s{<style\b[^>]*>.*?</style>}{}gis;
+        s{<!--.*?-->}{}gs;
+        s{<[^>]+>}{}gs;
+        s{&nbsp;}{ }g;
+        s{&amp;}{&}g;
+        s{&lt;}{<}g;
+        s{&gt;}{>}g;
+        s{&quot;}{"}g;
+        s{&#39;}{'\''}g;
+        s{\s+}{ }g;
+        s{^\s+|\s+$}{}g;
+    ' "$FILE" > "$OUT"
 
     COUNT=$((COUNT + 1))
 done

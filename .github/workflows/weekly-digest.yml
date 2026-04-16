@@ -59,15 +59,25 @@ jobs:
             echo "has_key=true" >> "$GITHUB_OUTPUT"
           fi
 
-      # 5a. Real run: secret is set, run the full pipeline.
+      # 5a. Real run: secret is set, run the full pipeline. The pipeline
+      #     writes into scripts/pipeline/work/ and scripts/pipeline/output/.
+      #     After it finishes, copy the digest to the repo-root output/
+      #     folder so it lives in one consistent place regardless of path.
       - name: run pipeline
         if: steps.check_key.outputs.has_key == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          cd scripts/pipeline
-          chmod +x ./*.sh
-          ./run-all.sh
+          chmod +x scripts/pipeline/*.sh
+          scripts/pipeline/run-all.sh
+          mkdir -p output
+          # Copy every digest the pipeline produced into the root output/.
+          if ls scripts/pipeline/output/*.md >/dev/null 2>&1; then
+            cp scripts/pipeline/output/*.md output/
+          else
+            echo "run-pipeline: no digest produced by stage 04" >&2
+            exit 1
+          fi
 
       # 5b. Stub run: secret is missing, write a stable placeholder.
       #     "Stable" matters — same content every run — so the next step
@@ -90,8 +100,10 @@ jobs:
           STUB
 
       # 6. Commit the digest back to the branch — but only if there's a
-      #    real change. The `git diff --quiet` check prevents empty
-      #    commits and the commit-loop trap from video C2.
+      #    real change. The `git diff --staged --quiet` check prevents
+      #    empty commits and the commit-loop trap from video C2.
+      #    Only the repo-root output/ is staged; pipeline work/ and
+      #    scripts/pipeline/output/ stay ignored.
       - name: commit digest
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

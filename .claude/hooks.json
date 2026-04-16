@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'if echo \"$CLAUDE_TOOL_INPUT\" | grep -qE \"(rm -rf /|DROP TABLE|git push --force)\"; then echo \"[one-way-door warning] This command is hard to undo. Read it twice before continuing.\" >&2; fi; exit 0'"
+            "command": "bash -c 'if echo \"$CLAUDE_TOOL_INPUT\" | grep -qiE \"(rm[[:space:]]+-rf?[[:space:]]+/|drop[[:space:]]+(table|database|schema)|truncate[[:space:]]+table|git[[:space:]]+push[[:space:]]+(--force(-with-lease)?|-f)|chmod[[:space:]]+777[[:space:]]+/|mkfs|dd[[:space:]]+if=.*of=/dev/)\"; then echo \"[one-way-door warning] This command is hard to undo. Read it twice before continuing.\" >&2; fi; exit 0'"
           }
         ]
       }

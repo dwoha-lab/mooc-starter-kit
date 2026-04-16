@@ -1,7 +1,6 @@
 # MOOC starter kit alignment — design spec
 
 **Date:** 2026-04-15
-**Author:** Claude (autonomous, authorized by Joe Amditis)
 **Branch:** `feat/mooc-alignment-2026-04`
 **Scope:** Option C (full rebuild)
 
@@ -233,13 +232,11 @@ One feature branch, multiple commits grouped by domain:
 
 2. **No PR merge:** Per Joe's memory rules, never merge own PRs. Branch gets pushed, PR opened, Copilot review triggered, Joe merges when back.
 
-3. **Subagent-driven implementation:** Five parallel subagents, each owning a disjoint set of files so no merge conflicts in the working tree. Synthesis of README happens in the main session after subagents report.
+3. **Screenshots deferred:** Module 4 docs use `[screenshot: /context output]` placeholders. Taking real screenshots would require running an interactive Claude Code session, which isn't clean in this autonomous mode.
 
-4. **Screenshots deferred:** Module 4 docs use `[screenshot: /context output]` placeholders. Taking real screenshots would require running an interactive Claude Code session, which isn't clean in this autonomous mode.
+4. **`mamdani-mini` is synthetic:** Real scraping would pull from public social accounts and risks surfacing real people's content in a public starter kit. Synthetic data preserves the pedagogical shape without that risk.
 
-5. **`mamdani-mini` is synthetic:** Real scraping would pull from public social accounts and risks surfacing real people's content in a public starter kit. Synthetic data preserves the pedagogical shape without that risk.
-
-6. **MCP preserved but demoted:** Joe has talked about MCP being real but token-heavy in videos. The kit still ships the filesystem example because students may want it for their final projects — but it's no longer load-bearing for any module.
+5. **MCP preserved but demoted:** Joe has talked about MCP being real but token-heavy in videos. The kit still ships the filesystem example because students may want it for their final projects — but it's no longer load-bearing for any module.
 
 ## Success criteria
 

@@ -44,10 +44,10 @@ fi
 
 mkdir -p "$OUT_DIR"
 
-PROMPT='You are a beat reporter assistant. Read the document below and return a single JSON object with these keys:
+PROMPT='You are a beat reporter assistant. The document is on stdin, after the line "---". Return a single JSON object with these keys:
   "summary": one to two sentences,
   "key_facts": array of strings,
-  "named_entities": array of {"name": string, "type": "person|org|place"},
+  "named_entities": array of {"name": string, "type": <one of: "person", "org", "place">},
   "unverified_claims": array of strings (claims that need a primary source).
 Return ONLY the JSON object, no prose.'
 
@@ -56,12 +56,9 @@ shopt -s nullglob
 for FILE in "$IN_DIR"/*.txt; do
     BASE="$(basename "$FILE" .txt)"
     OUT="$OUT_DIR/$BASE.json"
-    CONTENT="$(cat "$FILE")"
 
-    if ! claude -p "$PROMPT
-
----
-$CONTENT" > "$OUT"; then
+    # Pass document via stdin to avoid hitting ARG_MAX on long files.
+    if ! { printf '%s\n---\n' "$PROMPT"; cat "$FILE"; } | claude -p > "$OUT"; then
         echo "03-process: claude failed on $BASE" >&2
         exit 1
     fi

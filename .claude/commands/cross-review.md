@@ -26,8 +26,10 @@ Run a cross-model code review on the current git diff using two external CLI age
 
 Run these checks. If either tool is missing, print the install instructions and stop.
 
-- `which copilot` — should return a path. If not, tell the user to install with `npm install -g @githubnext/github-copilot-cli` and authenticate with `gh auth login`.
+- `which copilot` — should return a path. If not, tell the user to install with `npm install -g @github/copilot` and sign in by running `copilot` once (or ensure `gh auth login` is set).
 - `which codex` — should return a path. If not, tell the user to install with `npm install -g @openai/codex` and set `OPENAI_API_KEY`.
+
+Package names for both CLIs have shifted over the past year. If `npm install -g @github/copilot` doesn't work, check GitHub's current Copilot CLI docs — see `docs/cross-model-review.md` for context.
 
 ## Step 2: Capture the diff
 
